@@ -1,3 +1,4 @@
+// This package contains the handlers interface and the handlers manager struct.
 package handlers
 
 import (
@@ -20,3 +21,5 @@ type HandlersManager struct {
 func NewHandlersManager(s service.Service) *HandlersManager {
 	return &HandlersManager{s}
 }
+
+

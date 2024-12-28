@@ -1,4 +1,4 @@
-// Package services provides functions for the operation of the service
+// This package contains the Service interface and ServiceManager struct that implements the Service interface.
 package services
 
 import (
@@ -9,9 +9,9 @@ import (
 // Interface Service describes functions the operation of the service
 type Service interface {
 	GetOrders() ([]models.Order, error)
-	GetStatusOrder(id int) (models.Order, error)
-	CreateOrder(order models.Order) (models.Order, error)
-	ChangeStatusOrder(id int, status string) (models.Order, error)
+	GetStatusOrder(id int) (string, error)
+	CreateOrder(order models.Order) error
+	ChangeStatusOrder(id int, status string) error
 }
 
 // ServiceManager is a struct that implements the Service interface
@@ -23,3 +23,4 @@ type ServiceManager struct {
 func NewServiceManager(repo repository.Repository) *ServiceManager {
 	return &ServiceManager{repo: repo}
 }
+

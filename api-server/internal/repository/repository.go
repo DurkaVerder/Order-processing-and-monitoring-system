@@ -1,4 +1,5 @@
-// Package repository provides functions for working with the database
+// This package contains the Repository interface and the RepositoryManager struct that implements it. 
+// The RepositoryManager struct is responsible for working with the database.
 package repository
 
 import (
@@ -12,8 +13,8 @@ import (
 // Interface Repository describes functions for working with the database
 type Repository interface {
 	GetOrders() ([]models.Order, error)
-	GetStatusOrder(id int) (models.Order, error)
-	CreateOrder(order models.Order) (models.Order, error)
+	GetOrder(id int) (models.Order, error)
+	CreateOrder(order models.Order) error
 }
 
 // RepositoryManager is a struct that implements the Repository interface
