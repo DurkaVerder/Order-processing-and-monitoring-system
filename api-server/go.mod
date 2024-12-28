@@ -5,6 +5,7 @@ go 1.23.3
 require (
 	Order-processing-and-monitoring-system/common v0.0.0-00010101000000-000000000000
 	github.com/gin-gonic/gin v1.10.0
+	github.com/lib/pq v1.10.9
 )
 
 require (
