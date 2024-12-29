@@ -16,7 +16,6 @@ import (
 type Repository interface {
 	GetOrders() ([]models.Order, error)
 	GetOrder(id int) (models.Order, error)
-	CreateOrder(order models.Order) error
 }
 
 // RepositoryManager is a struct that implements the Repository interface

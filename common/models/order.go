@@ -10,3 +10,8 @@ type Order struct {
 	UpdateAt      string  `json:"update_at"`
 	Amount        float64 `json:"amount"`
 }
+
+type StatusOrder struct {
+	ID     int    `json:"id"`
+	Status string `json:"status"`
+}

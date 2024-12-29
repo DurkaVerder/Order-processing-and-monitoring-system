@@ -1,4 +1,4 @@
-// This package contains the implementation of the order repository interface. 
+// This package contains the implementation of the order repository interface.
 // It contains the methods to interact with the database for the order entity.
 package repository
 
@@ -38,15 +38,4 @@ func (r *RepositoryManager) GetOrder(id int) (models.Order, error) {
 	}
 
 	return order, nil
-}
-
-// CreateOrder creates a new order in the database.
-func (r *RepositoryManager) CreateOrder(order models.Order) error {
-	req := "INSERT INTO orders (customer_name, customer_email, description, status, created_at, update_at, amount) VALUES ($1, $2, $3, $4, $5, $6, $7)"
-	_, err := r.db.Exec(req, order.CustomerName, order.CustomerEmail, order.Description, order.Status, order.CreatedAt, order.UpdateAt, order.Amount)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
