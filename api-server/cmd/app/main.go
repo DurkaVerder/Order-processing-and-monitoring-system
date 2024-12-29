@@ -2,6 +2,7 @@
 package main
 
 import (
+	"api-server/config"
 	"api-server/internal/handlers"
 	"api-server/internal/repository"
 	"api-server/internal/server"
@@ -9,13 +10,18 @@ import (
 )
 
 func main() {
-	// Create a new repository
-	repository := repository.NewRepositoryManager()
+	// Initialize the configuration
+	cfg := config.InitConfig()
 
+	// Create a new repository
+	repository := repository.NewRepositoryManager(cfg)
+
+	// Create a new service
 	service := services.NewServiceManager(repository)
+
 	// Create a new handler
 	handler := handlers.NewHandlersManager(service)
 
 	// Start the server
-	server.InitAndStartServer(handler)
+	server.InitAndStartServer(handler, cfg)
 }

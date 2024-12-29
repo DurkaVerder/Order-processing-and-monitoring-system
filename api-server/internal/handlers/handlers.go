@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Handlers interface describes the methods of the handlers.
 type Handlers interface {
 	GetOrders(c *gin.Context)
 	GetStatusOrder(c *gin.Context)
@@ -14,10 +15,13 @@ type Handlers interface {
 	ChangeStatusOrder(c *gin.Context)
 }
 
+// HandlersManager is a struct that implements the Handlers interface.
 type HandlersManager struct {
 	s service.Service
 }
 
+
+// NewHandlersManager creates a new HandlersManager.
 func NewHandlersManager(s service.Service) *HandlersManager {
 	return &HandlersManager{s}
 }

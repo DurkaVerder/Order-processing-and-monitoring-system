@@ -1,10 +1,12 @@
-// This package contains the Repository interface and the RepositoryManager struct that implements it. 
+// This package contains the Repository interface and the RepositoryManager struct that implements it.
 // The RepositoryManager struct is responsible for working with the database.
 package repository
 
 import (
 	"Order-processing-and-monitoring-system/common/models"
+	"api-server/config"
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
@@ -23,17 +25,17 @@ type RepositoryManager struct {
 }
 
 // NewRepositoryManager creates a new RepositoryManager
-func NewRepositoryManager() *RepositoryManager {
-	db, err := initDb()
+func NewRepositoryManager(cfg *config.Config) *RepositoryManager {
+	db, err := initDb(cfg)
 	if err != nil {
 		log.Fatal("Error in InitDb:", err.Error())
 	}
 	return &RepositoryManager{db: db}
 }
 
-
-func initDb() (*sql.DB, error) {
-	db, err := sql.Open("postgres", "user=postgres password=durka dbname=Order-processing-and-monitoring-system port=5432 sslmode=disable")
+func initDb(cfg *config.Config) (*sql.DB, error) {
+	connect := fmt.Sprint("user=", cfg.Database.User, " password=", cfg.Database.Password, " dbname=", cfg.Database.DBName, " port=", cfg.Database.Port, " sslmode=", cfg.Database.SSLMode)
+	db, err := sql.Open("postgres", connect)
 	if err != nil {
 		return db, err
 	}
