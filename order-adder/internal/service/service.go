@@ -3,7 +3,7 @@ package service
 
 import (
 	"Order-processing-and-monitoring-system/common/models"
-	kafka "order-adder/internal/kafka/producer"
+	"order-adder/internal/kafka/producer"
 	"order-adder/internal/repository"
 )
 
@@ -15,10 +15,10 @@ type Service interface {
 // ServiceManager is a struct that contains the Kafka and repository instances.
 type ServiceManager struct {
 	repo     repository.Repository
-	producer kafka.Producer
+	producer producer.Producer
 }
 
 // NewServiceManager creates a new ServiceManager instance.
-func NewServiceManager(repo repository.Repository, producer kafka.Producer) *ServiceManager {
+func NewServiceManager(repo repository.Repository, producer producer.Producer) *ServiceManager {
 	return &ServiceManager{repo: repo, producer: producer}
 }
