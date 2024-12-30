@@ -14,3 +14,8 @@ type StatusOrder struct {
 	ID     int    `json:"id"`
 	Status string `json:"status"`
 }
+
+type Report struct {
+	Status   string `json:"status"`
+	DateTime string `json:"date_time"`
+}
