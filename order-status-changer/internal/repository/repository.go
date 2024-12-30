@@ -12,7 +12,7 @@ import (
 // Repository is the interface that wraps the basic methods for the repository.
 type Repository interface {
 	AddStatusOrder(order models.Order) error
-	ChangeStatusOrder(order models.StatusOrder)
+	ChangeStatusOrder(order models.StatusOrder) error
 }
 
 // RepositoryManager is the manager for the repository.
