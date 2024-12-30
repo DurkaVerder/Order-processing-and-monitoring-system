@@ -24,5 +24,5 @@ func main() {
 	// Initialize the Kafka consumer.
 	consumer := consumer.NewConsumerManager(config.Kafka.Brokers, service)
 
-	consumer.StartConsumer("order.new")
+	consumer.StartConsumer("orders.new")
 }

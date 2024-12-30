@@ -10,7 +10,7 @@ func (s *ServiceManager) AddOrder(order models.Order) error {
 		return err
 	}
 	orderStatus := models.StatusOrder{ID: id, Status: "created"}
-	if err = s.producer.SendMessageForSetStatusOrder("order.status", orderStatus); err != nil {
+	if err = s.producer.SendMessageForSetStatusOrder("orders.status", orderStatus); err != nil {
 		return err
 	}
 
