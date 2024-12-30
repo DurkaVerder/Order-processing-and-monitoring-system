@@ -11,7 +11,7 @@ import (
 
 // Repository is the interface that wraps the basic methods for the repository.
 type Repository interface {
-	AddStatusOrder(order models.Order) error
+	AddStatusOrder(order models.StatusOrder) error
 	ChangeStatusOrder(order models.StatusOrder) error
 }
 
