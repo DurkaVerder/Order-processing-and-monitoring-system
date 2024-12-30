@@ -15,7 +15,7 @@ import (
 // Interface Repository describes functions for working with the database
 type Repository interface {
 	GetOrders() ([]models.Order, error)
-	GetOrder(id int) (models.Order, error)
+	GetOrderStatus(id int) (models.StatusOrder, error)
 }
 
 // RepositoryManager is a struct that implements the Repository interface
@@ -33,7 +33,8 @@ func NewRepositoryManager(cfg *config.Config) *RepositoryManager {
 }
 
 func initDb(cfg *config.Config) (*sql.DB, error) {
-	connect := fmt.Sprint("user=", cfg.Database.User, " password=", cfg.Database.Password, " dbname=", cfg.Database.DBName, " port=", cfg.Database.Port, " sslmode=", cfg.Database.SSLMode)
+	connect := fmt.Sprintf("user=%s password=%s dbname=%s port=%s sslmode=%s",
+		cfg.Database.User, cfg.Database.Password, cfg.Database.DBName, cfg.Database.Port, cfg.Database.SSLMode)
 	db, err := sql.Open("postgres", connect)
 	if err != nil {
 		return db, err

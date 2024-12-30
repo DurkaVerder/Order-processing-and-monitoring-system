@@ -16,7 +16,7 @@ func (s *ServiceManager) GetOrders() ([]models.Order, error) {
 
 // GetStatusOrder returns the status of the order by id.
 func (s *ServiceManager) GetStatusOrder(id int) (string, error) {
-	order, err := s.repo.GetOrder(id)
+	order, err := s.repo.GetOrderStatus(id)
 	if err != nil {
 		return "", err
 	}
@@ -25,10 +25,17 @@ func (s *ServiceManager) GetStatusOrder(id int) (string, error) {
 
 // CreateOrder send msg in Kafka
 func (s *ServiceManager) CreateOrder(order models.Order) error {
+	if err := s.producer.SendMessageForCreateOrder("orders.new", order); err != nil {
+		return err
+	}
 	return nil
 }
 
 // ChangeStatusOrder send msg in Kafka
 func (s *ServiceManager) ChangeStatusOrder(id int, status string) error {
+	order := models.StatusOrder{ID: id, Status: status}
+	if err := s.producer.SendMessageForChangeStatusOrder("orders.status", order); err != nil {
+		return err
+	}
 	return nil
 }

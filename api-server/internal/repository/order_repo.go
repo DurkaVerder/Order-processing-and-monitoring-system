@@ -16,7 +16,7 @@ func (r *RepositoryManager) GetOrders() ([]models.Order, error) {
 	orders := []models.Order{}
 	for rows.Next() {
 		order := models.Order{}
-		err := rows.Scan(&order.ID, &order.CustomerName, &order.CustomerEmail, &order.Description, &order.Status, &order.CreatedAt, &order.UpdateAt, &order.Amount)
+		err := rows.Scan(&order.ID, &order.CustomerName, &order.CustomerEmail, &order.Description, &order.CreatedAt, &order.UpdateAt, &order.Amount)
 		if err != nil {
 			return nil, err
 		}
@@ -27,14 +27,14 @@ func (r *RepositoryManager) GetOrders() ([]models.Order, error) {
 }
 
 // GetOrder returns the order by id from the database.
-func (r *RepositoryManager) GetOrder(id int) (models.Order, error) {
-	req := "SELECT * FROM orders WHERE id = $1"
+func (r *RepositoryManager) GetOrderStatus(id int) (models.StatusOrder, error) {
+	req := "SELECT * FROM order-status WHERE id = $1"
 	row := r.db.QueryRow(req, id)
 
-	order := models.Order{}
-	err := row.Scan(&order.ID, &order.CustomerName, &order.CustomerEmail, &order.Description, &order.Status, &order.CreatedAt, &order.UpdateAt, &order.Amount)
+	order := models.StatusOrder{}
+	err := row.Scan(&order.ID, &order.Status)
 	if err != nil {
-		return models.Order{}, err
+		return models.StatusOrder{}, err
 	}
 
 	return order, nil

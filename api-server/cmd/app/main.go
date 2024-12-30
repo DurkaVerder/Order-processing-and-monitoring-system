@@ -4,6 +4,7 @@ package main
 import (
 	"api-server/config"
 	"api-server/internal/handlers"
+	"api-server/internal/kafka/producer"
 	"api-server/internal/repository"
 	"api-server/internal/server"
 	"api-server/internal/services"
@@ -16,8 +17,11 @@ func main() {
 	// Create a new repository
 	repository := repository.NewRepositoryManager(cfg)
 
+	// Create a new Kafka producer
+	producer := producer.NewProducer(cfg.Kafka.Brokers)
+
 	// Create a new service
-	service := services.NewServiceManager(repository)
+	service := services.NewServiceManager(producer, repository)
 
 	// Create a new handler
 	handler := handlers.NewHandlersManager(service)
