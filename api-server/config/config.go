@@ -28,7 +28,7 @@ type Config struct {
 // InitConfig initializes the configuration for the api server.
 func InitConfig() *Config {
 	cfg := Config{}
-	file, err := os.Open("/config/cfg.yaml")
+	file, err := os.Open("config/cfg.yaml")
 	if err != nil {
 		log.Fatalf("error: %v", err)
 	}

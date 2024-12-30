@@ -1,12 +1,12 @@
-Server:
+server:
   port: ":2222"
 
-Database:
+database:
   user: "postgres"
   password: "durka"
   dbname: "Order-processing-and-monitoring-system"
   port: "5432"
   sslmode: "disable"
 
-Kafka: 
+kafka:
   brokers: "localhost:9092"
