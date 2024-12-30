@@ -9,14 +9,20 @@ import (
 	"github.com/IBM/sarama"
 )
 
-// Producer is a wrapper around the sarama.SyncProducer to provide a more
-type Producer struct {
+// Producer is a generic interface for producing messages to Kafka.
+type Producer interface {
+	SendMessageForChangeStatusOrder(topic string, order models.StatusOrder) error
+	SendMessageForCreateOrder(topic string, order models.Order) error
+}
+
+// ProducerManager is a Kafka producer that sends messages to a Kafka topic.
+type ProducerManager struct {
 	producer sarama.SyncProducer
 	config   *sarama.Config
 }
 
 // NewProducer creates a new Producer using the given broker addresses and configuration.
-func NewProducer(brokers string) (*Producer, error) {
+func NewProducer(brokers string) *ProducerManager {
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
 	config.Producer.RequiredAcks = sarama.WaitForAll
@@ -24,19 +30,40 @@ func NewProducer(brokers string) (*Producer, error) {
 
 	producer, err := sarama.NewSyncProducer([]string{brokers}, config)
 	if err != nil {
-		return nil, err
+		log.Fatal("Error creating producer: ", err)
 	}
 
-	return &Producer{producer, config}, nil
+	return &ProducerManager{producer, config}
 }
 
 // SendMessageForCreateOrder sends a message to the Kafka topic for change status order.
-func (p *Producer) SendMessageForChangeStatusOrder(topic string, order models.StatusOrder) error {
+func (p *ProducerManager) SendMessageForChangeStatusOrder(topic string, order models.StatusOrder) error {
 	data, err := json.Marshal(order)
 	if err != nil {
 		return nil
 	}
 
+	if err = p.sendMessage(topic, data); err != nil {
+		return err
+	}
+	return nil
+}
+
+// SendMessageForCreateOrder sends a message to the Kafka topic for create order.
+func (p *ProducerManager) SendMessageForCreateOrder(topic string, order models.Order) error {
+	data, err := json.Marshal(order)
+	if err != nil {
+		return nil
+	}
+
+	if err = p.sendMessage(topic, data); err != nil {
+		return err
+	}
+	return nil
+}
+
+// sendMessage sends a message to the Kafka topic.
+func (p *ProducerManager) sendMessage(topic string, data []byte) error {
 	msg := &sarama.ProducerMessage{
 		Topic: topic,
 		Value: sarama.ByteEncoder(data),

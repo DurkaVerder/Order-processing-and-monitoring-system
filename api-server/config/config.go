@@ -20,6 +20,9 @@ type Config struct {
 		Port     string `yaml:"port"`
 		SSLMode  string `yaml:"sslmode"`
 	}
+	Kafka struct {
+		Brokers string `yaml:"brokers"`
+	}
 }
 
 // InitConfig initializes the configuration for the api server.

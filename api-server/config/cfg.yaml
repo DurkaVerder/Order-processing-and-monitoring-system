@@ -7,3 +7,6 @@ Database:
   dbname: "Order-processing-and-monitoring-system"
   port: "5432"
   sslmode: "disable"
+
+Kafka: 
+  brokers: "localhost:9092"

@@ -3,6 +3,7 @@ package services
 
 import (
 	"Order-processing-and-monitoring-system/common/models"
+	"api-server/internal/kafka"
 	"api-server/internal/repository"
 )
 
@@ -16,11 +17,11 @@ type Service interface {
 
 // ServiceManager is a struct that implements the Service interface
 type ServiceManager struct {
-	repo repository.Repository
+	kafka *kafka.Kafka
+	repo  repository.Repository
 }
 
 // NewServiceManager creates a new ServiceManager
-func NewServiceManager(repo repository.Repository) *ServiceManager {
-	return &ServiceManager{repo: repo}
+func NewServiceManager(kafka *kafka.Kafka, repo repository.Repository) *ServiceManager {
+	return &ServiceManager{kafka: kafka, repo: repo}
 }
-
