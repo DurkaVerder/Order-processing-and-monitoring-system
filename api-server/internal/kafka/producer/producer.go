@@ -1,5 +1,5 @@
 // This package contains the implementation of the Kafka consumer and producer.
-package kafka
+package producer
 
 import (
 	"Order-processing-and-monitoring-system/common/models"

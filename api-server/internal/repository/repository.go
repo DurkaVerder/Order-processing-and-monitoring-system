@@ -15,7 +15,7 @@ import (
 // Interface Repository describes functions for working with the database
 type Repository interface {
 	GetOrders() ([]models.Order, error)
-	GetOrder(id int) (models.Order, error)
+	GetOrderStatus(id int) (models.StatusOrder, error)
 }
 
 // RepositoryManager is a struct that implements the Repository interface
