@@ -3,6 +3,7 @@ package service
 
 import (
 	"Order-processing-and-monitoring-system/common/models"
+	"order-status-changer/internal/kafka"
 	"time"
 )
 
@@ -12,7 +13,7 @@ func (s *ServiceManager) AddStatusOrder(order models.StatusOrder) error {
 		return err
 	}
 	report := models.Report{Status: order.Status, DateTime: time.Now()}
-	if err := s.producer.SendMessageForAnalytics("order.report", report, 5); err != nil {
+	if err := s.producer.SendMessageForAnalytics(kafka.TopicReport, report, kafka.MaxRetries); err != nil {
 		return err
 	}
 	return nil
@@ -30,7 +31,7 @@ func (s *ServiceManager) ChangeStatusOrder(order models.StatusOrder) error {
 	}
 
 	report := models.Report{Status: order.Status, DateTime: time.Now()}
-	if err := s.producer.SendMessageForAnalytics("order.report", report, 5); err != nil {
+	if err := s.producer.SendMessageForAnalytics(kafka.TopicReport, report, kafka.MaxRetries); err != nil {
 		return err
 	}
 

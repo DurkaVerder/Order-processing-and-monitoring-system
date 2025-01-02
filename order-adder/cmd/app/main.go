@@ -2,6 +2,7 @@ package main
 
 import (
 	"order-adder/config"
+	"order-adder/internal/kafka"
 	"order-adder/internal/kafka/consumer"
 	"order-adder/internal/kafka/producer"
 	"order-adder/internal/repository"
@@ -24,5 +25,5 @@ func main() {
 	// Initialize the Kafka consumer.
 	consumer := consumer.NewConsumerManager(config.Kafka.Brokers, service)
 
-	consumer.StartConsumer("orders.new")
+	consumer.StartConsumer(kafka.TopicNewOrders)
 }

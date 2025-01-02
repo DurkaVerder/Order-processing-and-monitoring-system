@@ -3,6 +3,7 @@ package service
 
 import (
 	"Order-processing-and-monitoring-system/common/models"
+	"order-adder/internal/kafka"
 	"time"
 )
 
@@ -14,7 +15,7 @@ func (s *ServiceManager) AddOrder(order models.Order) error {
 		return err
 	}
 	orderStatus := models.StatusOrder{ID: id, Status: "created"}
-	if err = s.producer.SendMessageForSetStatusOrder("orders.status", orderStatus, 5); err != nil {
+	if err = s.producer.SendMessageForSetStatusOrder(kafka.TopicOrderStatus, orderStatus, kafka.MaxRetries); err != nil {
 		return err
 	}
 

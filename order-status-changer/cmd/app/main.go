@@ -2,6 +2,7 @@ package main
 
 import (
 	"order-status-changer/config"
+	"order-status-changer/internal/kafka"
 	"order-status-changer/internal/kafka/consumer"
 	"order-status-changer/internal/kafka/producer"
 	"order-status-changer/internal/repository"
@@ -25,5 +26,5 @@ func main() {
 	consumer := consumer.NewConsumerManager(config.Kafka.Brokers, service)
 
 	// Start the consumer.
-	consumer.StartConsumer("orders.status")
+	consumer.StartConsumer(kafka.TopicOrderStatus)
 }
