@@ -1,4 +1,5 @@
 version: '3.9'
+
 services:
   kafka:
     image: bitnami/kafka:latest
@@ -11,6 +12,8 @@ services:
       - "9092:9092"
     depends_on:
       - zookeeper
+    networks:
+      - order_processing_network
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -19,6 +22,8 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
     ports:
       - "2181:2181"
+    networks:
+      - order_processing_network
 
   postgres:
     image: postgres:15
@@ -32,18 +37,24 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - order_processing_network
 
   api-server:
     build:
       context: ./api-server
       dockerfile: Dockerfile
     container_name: api-server
+    ports:
+      - "8080:8080"
     depends_on:
       - kafka
       - postgres
     environment:
       - DATABASE_URL=postgres://postgres:durka@postgres:5432/Order-processing-and-monitoring-system?sslmode=disable
       - KAFKA_BROKERS=kafka:9092
+    networks:
+      - order_processing_network
 
   order-adder:
     build:
@@ -56,6 +67,8 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:durka@postgres:5432/Order-processing-and-monitoring-system?sslmode=disable
       - KAFKA_BROKERS=kafka:9092
+    networks:
+      - order_processing_network
 
   order-status-changer:
     build:
@@ -68,6 +81,12 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:durka@postgres:5432/Order-processing-and-monitoring-system?sslmode=disable
       - KAFKA_BROKERS=kafka:9092
+    networks:
+      - order_processing_network
 
 volumes:
   postgres_data:
+
+networks:
+  order_processing_network:
+    driver: bridge

@@ -28,7 +28,7 @@ func (r *RepositoryManager) GetOrders() ([]models.Order, error) {
 
 // GetOrder returns the order by id from the database.
 func (r *RepositoryManager) GetOrderStatus(id int) (models.StatusOrder, error) {
-	req := "SELECT * FROM order-status WHERE id = $1"
+	req := "SELECT * FROM status_orders WHERE order_id = $1"
 	row := r.db.QueryRow(req, id)
 
 	order := models.StatusOrder{}

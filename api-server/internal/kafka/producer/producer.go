@@ -32,7 +32,6 @@ func NewProducer(brokers string) *ProducerManager {
 	if err != nil {
 		log.Fatal("Error creating producer: ", err)
 	}
-
 	return &ProducerManager{producer, config}
 }
 

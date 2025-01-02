@@ -11,9 +11,9 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE status_orders (
-    order_id INT PRIMARY KEY,                       -- Ссылка на id из таблицы orders
-    status VARCHAR(255) NOT NULL,                   -- Статус заказа
-    FOREIGN KEY (order_id) REFERENCES orders(id)    -- Внешний ключ, ссылающийся на таблицу orders
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,                          -- Ссылка на id из таблицы orders
+    status VARCHAR(255) NOT NULL                    -- Статус заказа
 );
 
 CREATE TABLE reports (
