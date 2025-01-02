@@ -1,9 +1,9 @@
 package consumer
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"encoding/json"
 	"log"
+	"order-status-changer/internal/models"
 	"order-status-changer/internal/service"
 
 	"github.com/IBM/sarama"

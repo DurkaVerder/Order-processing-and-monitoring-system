@@ -2,7 +2,7 @@
 package handlers
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
+	"api-server/internal/models"
 	"net/http"
 	"strconv"
 

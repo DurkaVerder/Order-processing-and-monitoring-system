@@ -2,8 +2,8 @@
 package service
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"order-adder/internal/kafka"
+	"order-adder/internal/models"
 	"time"
 )
 

@@ -4,8 +4,6 @@ WORKDIR /order-status-changer
 
 COPY . .
 
-COPY ../common ./common
-
 RUN go mod tidy
 
 RUN go build -o app ./cmd/app/main.go

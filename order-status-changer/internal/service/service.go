@@ -2,8 +2,8 @@
 package service
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"order-status-changer/internal/kafka/producer"
+	"order-status-changer/internal/models"
 	"order-status-changer/internal/repository"
 )
 

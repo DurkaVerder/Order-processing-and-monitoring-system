@@ -2,11 +2,11 @@
 package repository
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"database/sql"
 	"fmt"
 	"log"
 	"order-status-changer/config"
+	"order-status-changer/internal/models"
 )
 
 // Repository is the interface that wraps the basic methods for the repository.

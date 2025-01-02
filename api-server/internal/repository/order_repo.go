@@ -2,7 +2,7 @@
 // It contains the methods to interact with the database for the order entity.
 package repository
 
-import "Order-processing-and-monitoring-system/common/models"
+import "api-server/internal/models"
 
 // GetOrders returns all orders from the database.
 func (r *RepositoryManager) GetOrders() ([]models.Order, error) {

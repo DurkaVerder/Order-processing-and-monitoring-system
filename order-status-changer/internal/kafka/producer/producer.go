@@ -2,9 +2,9 @@
 package producer
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"encoding/json"
 	"log"
+	"order-status-changer/internal/models"
 
 	"github.com/IBM/sarama"
 )

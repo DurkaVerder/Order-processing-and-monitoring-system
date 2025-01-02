@@ -2,8 +2,8 @@
 package services
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"api-server/internal/kafka"
+	"api-server/internal/models"
 )
 
 // GetOrders returns all orders.

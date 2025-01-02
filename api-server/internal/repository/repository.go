@@ -3,8 +3,8 @@
 package repository
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"api-server/config"
+	"api-server/internal/models"
 	"database/sql"
 	"fmt"
 	"log"

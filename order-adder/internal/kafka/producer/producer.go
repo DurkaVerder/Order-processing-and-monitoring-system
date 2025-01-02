@@ -2,7 +2,7 @@
 package producer
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
+	"order-adder/internal/models"
 	"encoding/json"
 	"log"
 
