@@ -11,7 +11,7 @@ import (
 
 // Producer is a wrapper around the sarama.SyncProducer to provide a more
 type Producer interface {
-	SendMessageForAnalytics(topic string, report models.Report) error
+	SendMessageForAnalytics(topic string, report models.Report, maxRetry int) error
 }
 
 // ProducerManager is a wrapper around the sarama.SyncProducer to provide a more
@@ -36,16 +36,19 @@ func NewProducerManager(brokers string) *ProducerManager {
 }
 
 // SendMessageForAddOrder sends a message to the Kafka topic for adding an order.
-func (p *ProducerManager) SendMessageForAnalytics(topic string, report models.Report) error {
+func (p *ProducerManager) SendMessageForAnalytics(topic string, report models.Report, maxRetry int) error {
 	data, err := json.Marshal(report)
 	if err != nil {
 		return nil
 	}
 
-	if err = p.sendMessage(topic, data); err != nil {
-		return err
+	for i := 0; i < maxRetry; i++ {
+		if err = p.sendMessage(topic, data); err == nil {
+			return nil
+		}
+		log.Printf("Error sending message to Kafka. Retry № %d: %s", i+1, err.Error())
 	}
-	return nil
+	return err
 }
 
 // sendMessage sends a message to the Kafka topic.

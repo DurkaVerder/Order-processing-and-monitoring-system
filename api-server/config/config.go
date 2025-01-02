@@ -18,6 +18,9 @@ type Config struct {
 		Port     string `yaml:"port"`
 		SSLMode  string `yaml:"sslmode"`
 	}
+	Server struct {
+		Port string `yaml:"port"`
+	}
 	Kafka struct {
 		Brokers string `yaml:"brokers"`
 	}

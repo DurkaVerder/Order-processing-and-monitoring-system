@@ -12,7 +12,7 @@ func (s *ServiceManager) AddStatusOrder(order models.StatusOrder) error {
 		return err
 	}
 	report := models.Report{Status: order.Status, DateTime: time.Now()}
-	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
+	if err := s.producer.SendMessageForAnalytics("order.report", report, 5); err != nil {
 		return err
 	}
 	return nil
@@ -30,7 +30,7 @@ func (s *ServiceManager) ChangeStatusOrder(order models.StatusOrder) error {
 	}
 
 	report := models.Report{Status: order.Status, DateTime: time.Now()}
-	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
+	if err := s.producer.SendMessageForAnalytics("order.report", report, 5); err != nil {
 		return err
 	}
 
