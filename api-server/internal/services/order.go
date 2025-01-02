@@ -2,7 +2,8 @@
 package services
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
+	"api-server/internal/kafka"
+	"api-server/internal/models"
 )
 
 // GetOrders returns all orders.
@@ -25,7 +26,7 @@ func (s *ServiceManager) GetStatusOrder(id int) (string, error) {
 
 // CreateOrder send msg in Kafka
 func (s *ServiceManager) CreateOrder(order models.Order) error {
-	if err := s.producer.SendMessageForCreateOrder("orders.new", order); err != nil {
+	if err := s.producer.SendMessageForCreateOrder(kafka.TopicNewOrders, order, kafka.MaxRetries); err != nil {
 		return err
 	}
 	return nil
@@ -34,8 +35,15 @@ func (s *ServiceManager) CreateOrder(order models.Order) error {
 // ChangeStatusOrder send msg in Kafka
 func (s *ServiceManager) ChangeStatusOrder(id int, status string) error {
 	order := models.StatusOrder{ID: id, Status: status}
-	if err := s.producer.SendMessageForChangeStatusOrder("orders.status", order); err != nil {
+	if err := s.producer.SendMessageForChangeStatusOrder(kafka.TopicOrderStatus, order, kafka.MaxRetries); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (s *ServiceManager) IsOrderStatusValid(status string) bool {
+	if status == "created" || status == "processing" || status == "done" {
+		return true
+	}
+	return false
 }

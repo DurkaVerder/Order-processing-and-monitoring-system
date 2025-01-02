@@ -1,4 +1,4 @@
-// This package the configuration for the api server. It contains the configuration for the server and the database.
+// This package the configuration for the order-adder service.
 package config
 
 import (
@@ -10,15 +10,16 @@ import (
 
 // Config is the configuration for the api server.
 type Config struct {
-	Server struct {
-		Port string `yaml:"port"`
-	}
 	Database struct {
+		Host     string `yaml:"host"`
 		User     string `yaml:"user"`
 		Password string `yaml:"password"`
 		DBName   string `yaml:"dbname"`
 		Port     string `yaml:"port"`
 		SSLMode  string `yaml:"sslmode"`
+	}
+	Server struct {
+		Port string `yaml:"port"`
 	}
 	Kafka struct {
 		Brokers string `yaml:"brokers"`

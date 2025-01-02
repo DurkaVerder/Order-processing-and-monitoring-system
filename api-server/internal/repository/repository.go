@@ -3,8 +3,8 @@
 package repository
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"api-server/config"
+	"api-server/internal/models"
 	"database/sql"
 	"fmt"
 	"log"
@@ -33,8 +33,9 @@ func NewRepositoryManager(cfg *config.Config) *RepositoryManager {
 }
 
 func initDb(cfg *config.Config) (*sql.DB, error) {
-	connect := fmt.Sprintf("user=%s password=%s dbname=%s port=%s sslmode=%s",
-		cfg.Database.User, cfg.Database.Password, cfg.Database.DBName, cfg.Database.Port, cfg.Database.SSLMode)
+	connect := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.DBName, cfg.Database.Port, cfg.Database.SSLMode)
+
 	db, err := sql.Open("postgres", connect)
 	if err != nil {
 		return db, err

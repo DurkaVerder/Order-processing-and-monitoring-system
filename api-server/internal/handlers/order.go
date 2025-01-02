@@ -2,7 +2,8 @@
 package handlers
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
+	"api-server/internal/models"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -57,11 +58,22 @@ func (h *HandlersManager) ChangeStatusOrder(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	status := ""
-	err = c.ShouldBindJSON(&status)
-	if err != nil {
-		c.JSON(500, gin.H{"error": "Error get status: " + err.Error()})
+	var request struct {
+		Status string `json:"status" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	h.s.ChangeStatusOrder(id, status)
+
+	if h.s.IsOrderStatusValid(request.Status) == false {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid status"})
+		return
+	}
+
+	if err := h.s.ChangeStatusOrder(id, request.Status); err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"info": "Status changed"})
 }

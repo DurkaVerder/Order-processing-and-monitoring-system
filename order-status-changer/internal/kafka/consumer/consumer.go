@@ -1,10 +1,10 @@
 package consumer
 
 import (
-	"order-adder/internal/models"
 	"encoding/json"
 	"log"
-	"order-adder/internal/service"
+	"order-status-changer/internal/models"
+	"order-status-changer/internal/service"
 
 	"github.com/IBM/sarama"
 )
@@ -59,15 +59,19 @@ func (c *ConsumerManager) StartConsumer(topic string) {
 
 			log.Printf("Message: %s\n", string(msg.Value))
 
-			order := models.Order{}
+			order := models.StatusOrder{}
 			if err := json.Unmarshal(msg.Value, &order); err != nil {
 				log.Printf("Error unmarshalling the message: %s\n", err.Error())
 			}
 
-			if err := c.service.AddOrder(order); err != nil {
-				log.Printf("Error adding the order: %s\n", err.Error())
+			if order.Status == "created" {
+				if err := c.service.AddStatusOrder(order); err != nil {
+					log.Printf("Error adding order status: %s\n", err.Error())
+				}
 			} else {
-				log.Printf("Order added successfully\n")
+				if err := c.service.ChangeStatusOrder(order); err != nil {
+					log.Printf("Error changing order status: %s\n", err.Error())
+				}
 			}
 
 		case err := <-c.partitionConsumer.Errors():

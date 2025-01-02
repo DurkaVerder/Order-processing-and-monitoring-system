@@ -2,7 +2,7 @@
 package producer
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
+	"api-server/internal/models"
 	"encoding/json"
 	"log"
 
@@ -11,8 +11,8 @@ import (
 
 // Producer is a generic interface for producing messages to Kafka.
 type Producer interface {
-	SendMessageForChangeStatusOrder(topic string, order models.StatusOrder) error
-	SendMessageForCreateOrder(topic string, order models.Order) error
+	SendMessageForChangeStatusOrder(topic string, order models.StatusOrder, maxRetry int) error
+	SendMessageForCreateOrder(topic string, order models.Order, maxRetry int) error
 }
 
 // ProducerManager is a Kafka producer that sends messages to a Kafka topic.
@@ -32,34 +32,39 @@ func NewProducer(brokers string) *ProducerManager {
 	if err != nil {
 		log.Fatal("Error creating producer: ", err)
 	}
-
 	return &ProducerManager{producer, config}
 }
 
 // SendMessageForCreateOrder sends a message to the Kafka topic for change status order.
-func (p *ProducerManager) SendMessageForChangeStatusOrder(topic string, order models.StatusOrder) error {
+func (p *ProducerManager) SendMessageForChangeStatusOrder(topic string, order models.StatusOrder, maxRetry int) error {
 	data, err := json.Marshal(order)
 	if err != nil {
 		return nil
 	}
 
-	if err = p.sendMessage(topic, data); err != nil {
-		return err
+	for i := 0; i < maxRetry; i++ {
+		if err = p.sendMessage(topic, data); err == nil {
+			return nil
+		}
+		log.Printf("Error sending message to Kafka. Retry № %d: %s", i+1, err.Error())
 	}
-	return nil
+	return err
 }
 
 // SendMessageForCreateOrder sends a message to the Kafka topic for create order.
-func (p *ProducerManager) SendMessageForCreateOrder(topic string, order models.Order) error {
+func (p *ProducerManager) SendMessageForCreateOrder(topic string, order models.Order, maxRetry int) error {
 	data, err := json.Marshal(order)
 	if err != nil {
 		return nil
 	}
 
-	if err = p.sendMessage(topic, data); err != nil {
-		return err
+	for i := 0; i < maxRetry; i++ {
+		if err = p.sendMessage(topic, data); err == nil {
+			return nil
+		}
+		log.Printf("Error sending message to Kafka. Retry № %d: %s", i+1, err.Error())
 	}
-	return nil
+	return err
 }
 
 // sendMessage sends a message to the Kafka topic.

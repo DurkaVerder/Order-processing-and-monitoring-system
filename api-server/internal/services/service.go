@@ -2,8 +2,8 @@
 package services
 
 import (
-	"Order-processing-and-monitoring-system/common/models"
 	"api-server/internal/kafka/producer"
+	"api-server/internal/models"
 	"api-server/internal/repository"
 )
 
@@ -13,6 +13,7 @@ type Service interface {
 	GetStatusOrder(id int) (string, error)
 	CreateOrder(order models.Order) error
 	ChangeStatusOrder(id int, status string) error
+	IsOrderStatusValid(status string) bool
 }
 
 // ServiceManager is a struct that implements the Service interface

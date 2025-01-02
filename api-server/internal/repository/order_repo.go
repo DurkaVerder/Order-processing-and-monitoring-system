@@ -2,7 +2,7 @@
 // It contains the methods to interact with the database for the order entity.
 package repository
 
-import "Order-processing-and-monitoring-system/common/models"
+import "api-server/internal/models"
 
 // GetOrders returns all orders from the database.
 func (r *RepositoryManager) GetOrders() ([]models.Order, error) {
@@ -28,7 +28,7 @@ func (r *RepositoryManager) GetOrders() ([]models.Order, error) {
 
 // GetOrder returns the order by id from the database.
 func (r *RepositoryManager) GetOrderStatus(id int) (models.StatusOrder, error) {
-	req := "SELECT * FROM order-status WHERE id = $1"
+	req := "SELECT * FROM status_orders WHERE order_id = $1"
 	row := r.db.QueryRow(req, id)
 
 	order := models.StatusOrder{}
