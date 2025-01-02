@@ -11,7 +11,7 @@ func (s *ServiceManager) AddStatusOrder(order models.StatusOrder) error {
 	if err != nil {
 		return err
 	}
-	report := models.Report{Status: order.Status, DateTime: time.Now().Format("2006-01-02 15:04:05")}
+	report := models.Report{Status: order.Status, DateTime: time.Now()}
 	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
 		return err
 	}
@@ -24,7 +24,12 @@ func (s *ServiceManager) ChangeStatusOrder(order models.StatusOrder) error {
 	if err != nil {
 		return err
 	}
-	report := models.Report{Status: order.Status, DateTime: time.Now().Format("2006-01-02 15:04:05")}
+	err = s.repo.ChangeUpdateDateStatus(order.ID)
+	if err != nil {
+		return err
+	}
+
+	report := models.Report{Status: order.Status, DateTime: time.Now()}
 	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
 		return err
 	}

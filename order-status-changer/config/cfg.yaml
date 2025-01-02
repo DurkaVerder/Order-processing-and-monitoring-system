@@ -3,7 +3,8 @@ database:
   password: "durka"
   dbname: "Order-processing-and-monitoring-system"
   port: "5432"
+  host: "postgres"
   sslmode: "disable"
 
 kafka:
-  brokers: "localhost:9092"
+  brokers: "kafka:9092"

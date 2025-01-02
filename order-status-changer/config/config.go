@@ -11,6 +11,7 @@ import (
 // Config is the configuration for the api server.
 type Config struct {
 	Database struct {
+		Host     string `yaml:"host"`
 		User     string `yaml:"user"`
 		Password string `yaml:"password"`
 		DBName   string `yaml:"dbname"`

@@ -8,7 +8,7 @@ import (
 
 // AddOrder adds an order to the repository.
 func (s *ServiceManager) AddOrder(order models.Order) error {
-	order.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
+	order.CreatedAt = time.Now()
 	id, err := s.repo.AddOrder(order)
 	if err != nil {
 		return err
