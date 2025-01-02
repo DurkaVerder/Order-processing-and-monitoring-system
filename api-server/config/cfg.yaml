@@ -9,4 +9,4 @@ database:
 kafka:
   brokers: "kafka:9092"
 server:
-  port: ":2222"
+  port: ":8080"
