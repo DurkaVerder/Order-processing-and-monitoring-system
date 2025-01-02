@@ -7,6 +7,8 @@ import (
 	"log"
 	"order-adder/config"
 	"order-adder/internal/models"
+
+	_ "github.com/lib/pq"
 )
 
 // Repository is the interface that wraps the basic methods for the repository.

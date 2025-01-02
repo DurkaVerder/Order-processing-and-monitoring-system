@@ -7,6 +7,8 @@ import (
 	"log"
 	"order-status-changer/config"
 	"order-status-changer/internal/models"
+
+	_ "github.com/lib/pq"
 )
 
 // Repository is the interface that wraps the basic methods for the repository.

@@ -2,11 +2,9 @@ module order-adder
 
 go 1.23.3
 
-replace Order-processing-and-monitoring-system/common => ../common
-
 require (
-	Order-processing-and-monitoring-system/common v0.0.0-00010101000000-000000000000
 	github.com/IBM/sarama v1.44.0
+	github.com/lib/pq v1.10.9
 	gopkg.in/yaml.v3 v3.0.1
 )
 
