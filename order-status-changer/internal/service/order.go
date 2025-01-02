@@ -1,15 +1,33 @@
 // This package contains the implementation of the AddOrder method of the service interface.
 package service
 
-import "Order-processing-and-monitoring-system/common/models"
+import (
+	"Order-processing-and-monitoring-system/common/models"
+	"time"
+)
 
 func (s *ServiceManager) AddStatusOrder(order models.StatusOrder) error {
-
+	err := s.repo.AddStatusOrder(order)
+	if err != nil {
+		return err
+	}
+	report := models.Report{Status: order.Status, DateTime: time.Now().Format("2006-01-02 15:04:05")}
+	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
+		return err
+	}
 	return nil
 }
 
 // AddOrder adds an order to the repository.
 func (s *ServiceManager) ChangeStatusOrder(order models.StatusOrder) error {
+	err := s.repo.ChangeStatusOrder(order)
+	if err != nil {
+		return err
+	}
+	report := models.Report{Status: order.Status, DateTime: time.Now().Format("2006-01-02 15:04:05")}
+	if err := s.producer.SendMessageForAnalytics("order.report", report); err != nil {
+		return err
+	}
 
 	return nil
 }
