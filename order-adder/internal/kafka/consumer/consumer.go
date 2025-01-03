@@ -32,7 +32,7 @@ func NewConsumerManager(brokers string, service service.Service) *ConsumerManage
 	for i := 0; i < kafka.MaxRetries; i++ {
 
 		consumer, err := sarama.NewConsumer([]string{brokers}, config)
-		if err != nil {
+		if err == nil {
 			log.Println("Successful create consumer")
 			return &ConsumerManager{consumer: consumer, config: config, service: service}
 		}
