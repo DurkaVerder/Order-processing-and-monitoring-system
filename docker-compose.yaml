@@ -64,6 +64,7 @@ services:
     depends_on:
       - kafka
       - postgres
+      - api-server
     environment:
       - DATABASE_URL=postgres://postgres:durka@postgres:5432/Order-processing-and-monitoring-system?sslmode=disable
       - KAFKA_BROKERS=kafka:9092
@@ -78,6 +79,8 @@ services:
     depends_on:
       - kafka
       - postgres
+      - api-server
+      - order-adder
     environment:
       - DATABASE_URL=postgres://postgres:durka@postgres:5432/Order-processing-and-monitoring-system?sslmode=disable
       - KAFKA_BROKERS=kafka:9092
