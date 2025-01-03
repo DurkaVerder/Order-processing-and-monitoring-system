@@ -18,7 +18,7 @@ func main() {
 	repository := repository.NewRepositoryManager(cfg)
 
 	// Create a new Kafka producer
-	producer := producer.NewProducer(cfg.Kafka.Brokers)
+	producer := producer.NewProducerManager(cfg.Kafka.Brokers)
 
 	// Create a new service
 	service := services.NewServiceManager(producer, repository)

@@ -2,9 +2,11 @@
 package producer
 
 import (
+	"api-server/internal/kafka"
 	"api-server/internal/models"
 	"encoding/json"
 	"log"
+	"time"
 
 	"github.com/IBM/sarama"
 )
@@ -22,17 +24,24 @@ type ProducerManager struct {
 }
 
 // NewProducer creates a new Producer using the given broker addresses and configuration.
-func NewProducer(brokers string) *ProducerManager {
+func NewProducerManager(brokers string) *ProducerManager {
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
 	config.Producer.RequiredAcks = sarama.WaitForAll
-	config.Producer.Retry.Max = 5
+	config.Producer.Retry.Max = kafka.MaxRetries
 
-	producer, err := sarama.NewSyncProducer([]string{brokers}, config)
-	if err != nil {
-		log.Fatal("Error creating producer: ", err)
+	for i := 0; i < kafka.MaxRetries; i++ {
+
+		producer, err := sarama.NewSyncProducer([]string{brokers}, config)
+		if err == nil {
+			log.Println("Successful create producer")
+			return &ProducerManager{producer, config}
+		}
+		log.Println("Error creating producer: ", err)
+		time.Sleep(5 * time.Second)
 	}
-	return &ProducerManager{producer, config}
+	log.Fatal("Error creating producer")
+	return nil
 }
 
 // SendMessageForCreateOrder sends a message to the Kafka topic for change status order.
