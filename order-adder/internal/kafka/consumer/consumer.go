@@ -1,10 +1,12 @@
 package consumer
 
 import (
-	"order-adder/internal/models"
 	"encoding/json"
 	"log"
+	"order-adder/internal/kafka"
+	"order-adder/internal/models"
 	"order-adder/internal/service"
+	"time"
 
 	"github.com/IBM/sarama"
 )
@@ -27,12 +29,18 @@ func NewConsumerManager(brokers string, service service.Service) *ConsumerManage
 	config := sarama.NewConfig()
 	config.Consumer.Return.Errors = true
 
-	consumer, err := sarama.NewConsumer([]string{brokers}, config)
-	if err != nil {
-		log.Fatal("Error creating consumer: ", err)
-	}
+	for i := 0; i < kafka.MaxRetries; i++ {
 
-	return &ConsumerManager{consumer: consumer, config: config, service: service}
+		consumer, err := sarama.NewConsumer([]string{brokers}, config)
+		if err == nil {
+			log.Println("Successful create consumer")
+			return &ConsumerManager{consumer: consumer, config: config, service: service}
+		}
+		log.Println("Error creating consumer: ", err)
+		time.Sleep(5 * time.Second)
+	}
+	log.Fatal("Error creating consumer")
+	return nil
 }
 
 // SubscribeTopic subscribes to the given topic.

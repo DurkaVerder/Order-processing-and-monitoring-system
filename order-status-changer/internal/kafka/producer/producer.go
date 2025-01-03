@@ -4,7 +4,9 @@ package producer
 import (
 	"encoding/json"
 	"log"
+	"order-status-changer/internal/kafka"
 	"order-status-changer/internal/models"
+	"time"
 
 	"github.com/IBM/sarama"
 )
@@ -25,14 +27,20 @@ func NewProducerManager(brokers string) *ProducerManager {
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
 	config.Producer.RequiredAcks = sarama.WaitForAll
-	config.Producer.Retry.Max = 5
+	config.Producer.Retry.Max = kafka.MaxRetries
 
-	producer, err := sarama.NewSyncProducer([]string{brokers}, config)
-	if err != nil {
-		log.Fatal("Error creating producer: ", err)
+	for i := 0; i < kafka.MaxRetries; i++ {
+
+		producer, err := sarama.NewSyncProducer([]string{brokers}, config)
+		if err == nil {
+			log.Println("Successful create producer")
+			return &ProducerManager{producer, config}
+		}
+		log.Println("Error creating producer: ", err)
+		time.Sleep(5 * time.Second)
 	}
-
-	return &ProducerManager{producer, config}
+	log.Fatal("Error creating producer")
+	return nil
 }
 
 // SendMessageForAddOrder sends a message to the Kafka topic for adding an order.
